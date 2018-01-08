@@ -1,0 +1,37 @@
+<!--index.wxml-->
+<view class="{{showMenu ? 'menu-on' : ''}}">
+  <view class="top{{floors ? ' floors-on' : ''}}">
+    <picker class="floors-picker" bindchange="toFloor" wx:if="{{floors}}" value="{{floor}}" range="{{floors.floors}}" range-key="name">
+      <view class="floors">{{current.name}}</view>
+    </picker>
+    <view class="search" bindtap="toSearch"><icon type="search" size="12"/> 搜索</view>
+  </view>
+   <scroll-view class="img" bindtouchstart="touchstartCallback"  bindtouchmove="touchmoveCallback" bindtouchend="touchendCallback" scroll-x="true"  scroll-y="true" scroll-into-view="{{toview}}">
+      <view wx:if="{{current}}" style="width:{{current.size[0]}}px;height:{{current.size[1]}}px;zoom:{{stv.scale}};">
+        <image src="{{current.image}}" style="width:{{current.size[0]}}px;height:{{current.size[1]}}px"></image>
+        <text wx:for="{{current.locations}}" data-index="{{index}}" id="{{'l'+index}}" bindtap="bindLocationTap" class="location-label" style="left:{{item.position[0]}}px;top:{{item.position[1]}}px">{{item.name}}</text>
+        <text wx:if="{{selected}}" hidden="{{!showdetail}}" id="location-label-selected" class="location-label" style="left:{{selected.position[0]}}px;top:{{selected.position[1]}}px">{{selected.name}}</text>
+      </view>
+  </scroll-view>
+  <view class="bottom{{showdetail ? ' location-detail-on' : ''}}">
+    <view class="toggle-menu" bindtap="bindViewTap">共{{current ? current.locations.length : ''}}处场所<text>{{showMenu ? '收起' : '展开'}}</text></view>
+    <scroll-view scroll-y="true" class="location-list" wx:if="{{current}}">
+      <view wx:for="{{current.locations}}" data-index="{{index}}" bindtap="bindLocationTap" hover-class="location-hover" class="location">
+        <text class="title{{item.title?'':' middle'}}">{{item.name}}</text>
+        <text class='dscpt'>{{item.title}}</text>
+      </view>
+    </scroll-view>
+    <view bindtap="hideDetail" class="location-overlay"><text decode="true">&lt; 返回</text></view>
+    <scroll-view scroll-y="true" class="location-detail">
+      <view wx:if="{{selected}}">
+        <text class="detail-name">{{selected.name}}</text>
+        <text class="detail-title">{{selected.title}}</text>
+        <button plain="true" id="share" open-type="share"><image src="../../resources/images/share.svg"></image></button>
+        <view class="floor-container">
+          <button class="floor" wx:for="{{selected.floors}}" data-index="{{index}}" bindtap="toLocation">{{item.name}}</button>
+        </view>
+        <view class="detail-title" wx:if="{{selected.phone}}">电话 <view class="detail-phone" data-phone="{{selected.phone}}" bindtap="callLocation">{{selected.phone}}</view></view>
+      </view>
+    </scroll-view>
+  </view>
+</view>

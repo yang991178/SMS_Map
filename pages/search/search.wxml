@@ -1,0 +1,22 @@
+<view>
+  <view class="top">
+    <input focus="true" class="search" bindinput="bindSearch" placeholder="输入场所编号或名称"></input>
+    <icon class="search-icon" type="search" size="12"/>
+  </view>
+  <view class="main">
+    <view wx:if="{{keyword==''}}" class="examples">
+      <text>您可以尝试输入...</text>
+      <text class="example">C505</text>
+      <text class="example">生物实验室</text>
+      <text class="example">充校卡</text>
+    </view>
+    <scroll-view scroll-y="true" wx:else class="results">
+      <view wx:for="{{results}}" data-path="{{item.path}}" bindtap="toLocation" class="location" hover-class="location-hover">
+        <text class="title">{{item.name}}</text>
+        <text class='dscpt'>{{item.title}}</text>
+        <text class='position'>{{item.position}}</text>
+      </view>
+      <view class="loaded">没有更多结果</view>
+    </scroll-view>
+  </view>
+</view>
